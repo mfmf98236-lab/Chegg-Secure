@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and security settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "tutor", "admin"] },
+        "subscriptionStatus": { "type": "string", "enum": ["active", "inactive", "expired"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "mfaEnabled": { "type": "boolean" },
+        "biometricVerified": { "type": "boolean" },
+        "lastLogin": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "An academic course bundle",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "instructor": { "type": "string" },
+        "tutorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isPremium": { "type": "boolean" }
+      },
+      "required": ["title", "instructor"]
+    },
+    "Material": {
+      "title": "Study Material",
+      "description": "Lessons, notes, or solutions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "courseId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "type": { "type": "string", "enum": ["lesson", "solution", "quiz"] },
+        "isPremium": { "type": "boolean" },
+        "authorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["courseId", "title", "content"]
+    },
+    "ActivityLog": {
+      "title": "Activity Log",
+      "description": "Security log for auditing user actions",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "event": { "type": "string" },
+        "path": { "type": "string" },
+        "ip": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "details": { "type": "object" }
+      },
+      "required": ["userId", "event", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Course information"
+    },
+    "/materials/{materialId}": {
+      "schema": "Material",
+      "description": "Study content"
+    },
+    "/activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Security audit logs"
+    }
+  }
+}
